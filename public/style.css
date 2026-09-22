@@ -1,0 +1,656 @@
+/* ── Design Tokens ────────────────────────────────────────────────────────── */
+:root {
+  --ink: #14161f;
+  --surface: #f7f6f2;
+  --surface-card: #ffffff;
+  --panel: #edebe4;
+  --border: #dfdcd3;
+  --accent: #1e5ba8;
+  --accent-light: #eaf1fb;
+  --accent-warm: #c45525;
+  --accent-warm-light: #faeee7;
+  --good: #1a7f4b;
+  --good-light: #e8f5ee;
+  --muted: #666675;
+  --muted-light: #8e8e9e;
+  --severity-critical: #d73a49;
+  --severity-critical-bg: #fdebec;
+  --severity-high: var(--accent-warm);
+  --severity-high-bg: var(--accent-warm-light);
+  --severity-medium: #b45d0b;
+  --severity-medium-bg: #fff0dd;
+  --severity-low: #5f6b7a;
+  --severity-low-bg: #eceff3;
+  --severity-info: var(--accent);
+  --severity-info-bg: var(--accent-light);
+  --severity-good: var(--good);
+  --severity-good-bg: var(--good-light);
+  --mono-bg: #1c1d26;
+  --mono-ink: #f0f0f5;
+  --radius: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.07);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #eaeaf2;
+    --surface: #12131a;
+    --surface-card: #1a1b24;
+    --panel: #222330;
+    --border: #2c2d3d;
+    --accent: #4d8ee8;
+    --accent-light: #162438;
+    --accent-warm: #e06c3a;
+    --accent-warm-light: #331d14;
+    --good: #38a169;
+    --good-light: #132b1f;
+    --muted: #9595a8;
+    --muted-light: #6e6e80;
+    --severity-critical: #f97583;
+    --severity-critical-bg: #3a2026;
+    --severity-high: #e88a5a;
+    --severity-high-bg: #3a2414;
+    --severity-medium: #f0a05a;
+    --severity-medium-bg: #3a2a14;
+    --severity-low: #9aa4b2;
+    --severity-low-bg: #2a2d3a;
+    --severity-info: #6ea3f0;
+    --severity-info-bg: #162438;
+    --severity-good: #4cbf85;
+    --severity-good-bg: #132b1f;
+    --mono-bg: #0f1015;
+    --mono-ink: #e2e2ec;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ink: #eaeaf2;
+  --surface: #12131a;
+  --surface-card: #1a1b24;
+  --panel: #222330;
+  --border: #2c2d3d;
+  --accent: #4d8ee8;
+  --accent-light: #162438;
+  --accent-warm: #e06c3a;
+  --accent-warm-light: #331d14;
+  --good: #38a169;
+  --good-light: #132b1f;
+  --muted: #9595a8;
+  --muted-light: #6e6e80;
+  --mono-bg: #0f1015;
+  --mono-ink: #e2e2ec;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, .brand-title {
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+code, pre, .mono {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.88rem;
+}
+
+/* ── Top Bar ─────────────────────────────────────────────────────────────── */
+.top-bar {
+  background-color: var(--surface-card);
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-tag {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--panel);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* ── Affiliate / Sponsor Header Bar ───────────────────────────────────────── */
+.sponsor-banner {
+  background-color: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0.45rem 1.5rem;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+}
+
+.sponsor-banner a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.sponsor-banner a:hover {
+  text-decoration: underline;
+}
+
+/* ── Main Layout ─────────────────────────────────────────────────────────── */
+.main-container {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 480px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .main-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Left Column (Input) ─────────────────────────────────────────────────── */
+.card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.preset-pills {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.pill-btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.75rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pill-btn:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.textarea-wrap {
+  position: relative;
+  margin-bottom: 0.9rem;
+}
+
+textarea#planInput {
+  width: 100%;
+  height: 380px;
+  background-color: var(--mono-bg);
+  color: var(--mono-ink);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+textarea#planInput:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.select-dialect {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.55rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+}
+
+/* ── Right Column (Output) ────────────────────────────────────────────────── */
+.output-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.output-empty-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.8rem;
+  opacity: 0.6;
+}
+
+/* ── Output Header Card ──────────────────────────────────────────────────── */
+.verdict-header {
+  border-left: 5px solid var(--accent);
+  margin-bottom: 1.25rem;
+}
+
+.verdict-header.warning {
+  border-left-color: var(--accent-warm);
+}
+
+.verdict-header.good {
+  border-left-color: var(--good);
+}
+
+.verdict-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.verdict-title {
+  font-size: 1.25rem;
+}
+
+.verdict-meta {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.verdict-story {
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+/* ── Bottleneck Spotlight Card ───────────────────────────────────────────── */
+.bottleneck-card {
+  background: var(--accent-warm-light);
+  border: 1px solid var(--accent-warm);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bottleneck-title {
+  color: var(--accent-warm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.bottleneck-desc {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.bottleneck-tip {
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--surface-card);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  border-left: 3px solid var(--accent-warm);
+}
+
+/* ── Affiliate Recommendation Slot ───────────────────────────────────────── */
+.affiliate-box {
+  background: linear-gradient(135deg, var(--surface-card) 0%, var(--panel) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.affiliate-content h4 {
+  font-size: 0.88rem;
+  margin-bottom: 0.2rem;
+}
+
+.affiliate-content p {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.affiliate-cta {
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.affiliate-cta:hover {
+  opacity: 0.9;
+}
+
+/* ── Step-Chain Cards ────────────────────────────────────────────────────── */
+.chain-heading {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+.step-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.step-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.step-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.step-card.severity-critical {
+  border-left-color: var(--severity-critical);
+}
+
+.step-card.severity-high {
+  border-left-color: var(--severity-high);
+}
+
+.step-card.severity-medium {
+  border-left-color: var(--severity-medium);
+}
+
+.step-card.severity-low {
+  border-left-color: var(--severity-low);
+}
+
+.step-card.severity-info {
+  border-left-color: var(--severity-info);
+}
+
+.step-card.severity-good {
+  border-left-color: var(--severity-good);
+}
+
+.step-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.step-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--panel);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.step-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+}
+
+.step-badge.critical {
+  background: var(--severity-critical-bg);
+  color: var(--severity-critical);
+}
+
+.step-badge.high {
+  background: var(--severity-high-bg);
+  color: var(--severity-high);
+}
+
+.step-badge.medium {
+  background: var(--severity-medium-bg);
+  color: var(--severity-medium);
+}
+
+.step-badge.low {
+  background: var(--severity-low-bg);
+  color: var(--severity-low);
+}
+
+.step-badge.info {
+  background: var(--severity-info-bg);
+  color: var(--severity-info);
+}
+
+.step-badge.good {
+  background: var(--severity-good-bg);
+  color: var(--severity-good);
+}
+
+.step-summary {
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.step-metrics {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed var(--border);
+}
+
+.step-tip {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  background: var(--panel);
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* ── Ad Banner at Bottom ──────────────────────────────────────────────────── */
+.bottom-ad-container {
+  max-width: 1400px;
+  margin: 1rem auto 2rem auto;
+  width: calc(100% - 3rem);
+  padding: 1rem 1.5rem;
+  background: var(--surface-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ad-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-light);
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+.ad-body {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.ad-text h5 {
+  font-size: 0.88rem;
+  margin-bottom: 0.15rem;
+}
+
+.ad-text p {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.ad-link {
+  background: var(--ink);
+  color: var(--surface);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+  background: var(--surface-card);
+}

@@ -1,0 +1,16 @@
+{
+  "name": "explain-humanizer",
+  "version": "1.0.0",
+  "description": "SQL EXPLAIN plan humanizer for data analysts",
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "node tests/test-runner.js",
+    "check": "npm run test"
+  },
+  "dependencies": {}
+}

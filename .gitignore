@@ -1,0 +1,9 @@
+.DS_Store
+__MACOSX/
+node_modules/
+.env
+.env.*
+coverage/
+dist/
+tmp/
+*.log

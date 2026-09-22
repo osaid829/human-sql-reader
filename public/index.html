@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL EXPLAIN Humanizer — Turn Query Plans into Plain English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-icon">&gt;_</div>
+      <div class="brand-title">EXPLAIN Humanizer</div>
+      <span class="brand-tag">Free Tool</span>
+    </div>
+    <div class="top-actions">
+      <button class="pill-btn" id="themeToggle" title="Toggle dark/light theme">🌓 Theme</button>
+    </div>
+  </header>
+
+  <!-- Affiliate Header Sponsor Bar -->
+  <div class="sponsor-banner">
+    <span>💡 <strong>Tip for slow queries:</strong> Running out of memory on large joins?</span>
+    <span>Check out <a href="https://supabase.com/?ref=explain_humanizer" target="_blank" rel="noopener sponsored">Supabase Managed Postgres (Free 500MB DB) &rarr;</a></span>
+  </div>
+
+  <!-- Main 2-column app container -->
+  <main class="main-container">
+
+    <!-- Left Column: Input Form -->
+    <section class="card">
+      <div class="card-title">
+        <span><strong>Input Query Plan</strong></span>
+        <span class="mono" style="font-size: 0.72rem; color: var(--muted);">PostgreSQL & MySQL</span>
+      </div>
+
+      <div class="preset-pills">
+        <span style="font-size: 0.75rem; color: var(--muted); align-self: center; margin-right: 0.2rem;">Try preset:</span>
+        <button class="pill-btn" id="btnPresetPgJson">PG (JSON)</button>
+        <button class="pill-btn" id="btnPresetSlow">PG (Seq Scan)</button>
+        <button class="pill-btn" id="btnPresetAnalyze">PG (ANALYZE)</button>
+        <button class="pill-btn" id="btnPresetMysqlTab">MySQL (Table)</button>
+        <button class="pill-btn" id="btnPresetMysqlJson">MySQL (JSON)</button>
+      </div>
+
+      <div class="textarea-wrap">
+        <textarea id="planInput" placeholder="Paste your EXPLAIN or EXPLAIN ANALYZE output here (Text or JSON format)..."></textarea>
+      </div>
+
+      <div class="form-row">
+        <select id="dialectSelect" class="select-dialect">
+          <option value="postgres">PostgreSQL</option>
+          <option value="mysql">MySQL</option>
+        </select>
+        <button id="humanizeBtn" class="btn-primary">
+          <span>Humanize Plan</span>
+          <span>&rarr;</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Right Column: Output / Humanized Analysis -->
+    <section id="outputSection">
+      <!-- Empty state when nothing is analyzed yet -->
+      <div id="outputEmpty" class="output-empty">
+        <div class="output-empty-icon">🔍</div>
+        <h3>No Query Plan Analyzed Yet</h3>
+        <p style="font-size: 0.85rem; margin-top: 0.4rem; max-width: 320px;">
+          Paste your <code>EXPLAIN</code> output on the left or click one of the preset buttons above to see the step-by-step breakdown.
+        </p>
+      </div>
+
+      <!-- Filled results container (hidden by default) -->
+      <div id="outputResults" style="display: none;">
+
+        <!-- Summary Headline Card -->
+        <div id="verdictCard" class="card verdict-header">
+          <div class="verdict-top">
+            <h2 id="verdictTitle" class="verdict-title">Query Verdict</h2>
+            <div id="verdictMeta" class="verdict-meta">0 steps</div>
+          </div>
+          <p id="verdictStory" class="verdict-story"></p>
+        </div>
+
+        <!-- Bottleneck Callout -->
+        <div id="bottleneckCard" class="bottleneck-card" style="display: none;">
+          <div class="bottleneck-title">
+            <span>⚡ Primary Bottleneck Identified</span>
+          </div>
+          <div id="bottleneckDesc" class="bottleneck-desc"></div>
+          <div id="bottleneckTip" class="bottleneck-tip"></div>
+        </div>
+
+        <!-- Affiliate Recommendation Box inside Output Flow -->
+        <div class="affiliate-box">
+          <div class="affiliate-content">
+            <h4>🚀 Need automated index recommendations?</h4>
+            <p>Try <strong>pganalyze</strong> or <strong>PlanetScale</strong> for continuous index & slow query monitoring.</p>
+          </div>
+          <a href="https://planetscale.com/?ref=explain_humanizer" target="_blank" rel="noopener sponsored" class="affiliate-cta">
+            Learn More
+          </a>
+        </div>
+
+        <!-- Step-by-Step Execution Chain -->
+        <div class="chain-heading">Step-by-Step Execution Chain</div>
+        <div id="stepsList" class="step-chain">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Monetization: Ad Banner slot -->
+  <aside class="bottom-ad-container">
+    <div class="ad-body">
+      <span class="ad-label">Sponsor</span>
+      <div class="ad-text">
+        <h5>Master Advanced SQL & Query Optimization</h5>
+        <p>Step-by-step guide to indexing, execution plans, and sub-millisecond database queries.</p>
+      </div>
+    </div>
+    <a href="https://use-the-index-luke.com/?ref=explain_humanizer" target="_blank" rel="noopener sponsored" class="ad-link">
+      Explore Guide &rarr;
+    </a>
+  </aside>
+
+  <!-- Footer -->
+  <footer>
+    <p>SQL EXPLAIN Humanizer — Built for Data Analysts & Backend Engineers. Zero tracking. Plans are processed by the application server and are not stored.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
