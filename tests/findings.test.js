@@ -16,8 +16,43 @@ export default async function run() {
   let f = findings.find(x => x.id === `rows-removed-${seq.id}`);
   if (!f || f.severity !== 'high') throw new Error('rows-removed finding missing or wrong severity');
   const rrLabels = f.evidence.map(e => e.label.toLowerCase()).join(' ');
-  if (!rrLabels.includes('examined') || !rrLabels.includes('removed')) {
-    throw new Error('rows-removed finding should carry examined/removed evidence');
+  if (!rrLabels.includes('estimated rows') || !rrLabels.includes('removed')) {
+    throw new Error('rows-removed finding should carry estimated/removed evidence');
+  }
+  if (rrLabels.includes('actual rows returned')) {
+    throw new Error('rows-removed must not label estimated rows as actual rows returned');
+  }
+  if (rrLabels.includes('rows examined')) {
+    throw new Error('rows-removed must not calculate rows examined without actualRows');
+  }
+  if (rrLabels.includes('discard ratio')) {
+    throw new Error('rows-removed must not calculate discard ratio without actualRows');
+  }
+
+  // ── Rows removed with real EXPLAIN ANALYZE metrics ────────────────────────
+  resetNodeIds();
+  const analyzedSeq = createPlanNode({
+    engine: 'postgresql',
+    operation: 'Seq Scan',
+    relation: 'event_logs',
+    estimatedRows: 2000,
+    actualRows: 1500,
+    rowsRemovedByFilter: 98500,
+  });
+  const analyzedFindings = generateFindings(flattenTree(analyzedSeq));
+  f = analyzedFindings.find(x => x.id === `rows-removed-${analyzedSeq.id}`);
+  if (!f) {
+    throw new Error('rows-removed finding should exist for actual EXPLAIN ANALYZE metrics');
+  }
+  const analyzedEvidence = Object.fromEntries(f.evidence.map(e => [e.label, e.value]));
+  if (analyzedEvidence['Actual Rows Returned'] !== '1,500') {
+    throw new Error('Actual Rows Returned should use actualRows');
+  }
+  if (analyzedEvidence['Rows Examined'] !== '100.0K') {
+    throw new Error(`Expected 100.0K rows examined, got ${analyzedEvidence['Rows Examined']}`);
+  }
+  if (analyzedEvidence['Discard Ratio'] !== '98.5%') {
+    throw new Error(`Expected 98.5% discard ratio, got ${analyzedEvidence['Discard Ratio']}`);
   }
 
   // ── Estimate mismatch (medium) ───────────────────────────────────────────
@@ -50,6 +85,13 @@ export default async function run() {
   });
   f = generateFindings(flattenTree(largeSeq)).find(x => x.id === `seq-scan-large-${largeSeq.id}`);
   if (!f || f.severity !== 'medium') throw new Error('seq-scan-large finding missing or wrong severity');
+  const estimatedLabels = f.evidence.map(e => e.label.toLowerCase()).join(' ');
+  if (!estimatedLabels.includes('estimated rows')) {
+    throw new Error('estimated-only sequential scan should say Estimated Rows');
+  }
+  if (estimatedLabels.includes('actual rows returned')) {
+    throw new Error('estimated-only sequential scan must not claim actual returned rows');
+  }
 
   // ── Nested loop amplification (medium) ───────────────────────────────────
   resetNodeIds();
